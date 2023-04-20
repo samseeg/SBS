@@ -1,18 +1,23 @@
-import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { urlFor } from '@/lib/client'
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { urlFor } from '@/lib/client';
+import CartModal from './CartModal';
 
 const Header = ({ item }) => {
-    console.log(item)
+    const [showCart, setShowCart] = useState(false);
+
+    const toggleCart = () => {
+        setShowCart(!showCart);
+    };
 
     return (
         <nav className="navbar navbar-expand-md navbar-light py-2 bg-primary">
             <div className="container-fluid">
                 <Link href="/" className="navbar-brand">
-                    <img src={urlFor(item.find(obj => obj.name === 'logo').image)}
+                    <img
+                        src={urlFor(item.find(obj => obj.name === 'logo').image)}
                         alt={'logo'}
-                        className='img-fluid'
+                        className="img-fluid"
                         width={150}
                         height={50}
                     />
@@ -46,20 +51,22 @@ const Header = ({ item }) => {
                             </Link>
                         </li>
                     </ul>
-                    <div className="d-flex">
-                        <img
-                            className="img-fluid"
-                            src={urlFor(item.find(obj => obj.name === 'bag').image)}
-                            alt="cart"
-                            width={30}
-                            height={30}
-                        />
-                        <div className=''>0</div>
+                    <div className="d-flex align-items-center">
+                        <div className="text-center" onClick={toggleCart}>
+                            <img
+                                src={urlFor(item.find(obj => obj.name === 'bag').image)}
+                                alt="cart"
+                                width={30}
+                                height={30}
+                            />
+                            <div className="">{0}</div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <CartModal show={showCart} onHide={toggleCart} />
         </nav>
-    )
-}
+    );
+};
 
-export default Header
+export default Header;
